@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="Viewer.Universal.Controls.FolderControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Viewer.Universal.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    x:Name="uc"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid  PointerWheelChanged="Grid_PointerWheelChanged" DragEnter="Grid_DragEnter"  AllowDrop="True" Drop="Grid_Drop" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Background="Black" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" x:Name="CurrentSeriesInstanceUID" Text="{Binding CurrentSeriesInstanceUID, Mode=TwoWay}" Visibility="Collapsed"/>
+            <TextBlock Grid.Row="1" x:Name="CurrentSeriesDescription" Text="{Binding CurrentSeriesDescription}"  Foreground="White" />
+            <canvas:CanvasControl Grid.Row="2" x:Name="CurrentImageCanvas" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PointerMoved="CurrentImage_PointerMoved" PointerPressed="CurrentImage_PointerPressed" Draw="CurrentImageCanvas_Draw" SizeChanged="CurrentImageCanvas_SizeChanged"  CreateResources="CurrentImageCanvas_CreateResources"  >
+            </canvas:CanvasControl>
+        </Grid>
+        <Slider x:Name="CurrentImageIndex" Value="{Binding CurrentImageIndex, Mode=TwoWay}" Grid.Column="1" Minimum="0" Maximum="{Binding NumberOfImages}" Orientation="Vertical" >
+        </Slider>
+    </Grid>
+</UserControl>

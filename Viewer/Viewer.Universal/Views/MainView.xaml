@@ -1,0 +1,97 @@
+﻿<UserControl
+    x:Class="Viewer.Universal.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Viewer.Universal.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     xmlns:converters="using:Viewer.Universal.Converter"
+    xmlns:models="using:Viewer.Library.Models"
+    xmlns:ctrls="using:Viewer.Universal.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <converters:DicomFileToDumpConverter x:Key="FileToDump"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
+
+        <ItemsPanelTemplate x:Key="folderTemplate">
+            <ctrls:FolderPanel/>
+        </ItemsPanelTemplate>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Column="0" Grid.Row="1" >
+
+            <ItemsControl ItemsSource="{Binding Patients}" >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate  >
+                        <StackPanel Orientation="Vertical">
+
+                            <ctrls:PatientInfoControl x:Name="lstPatients" Patient="{Binding}" ></ctrls:PatientInfoControl>
+
+                            <ItemsControl ItemsSource="{Binding Studies}" >
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <ctrls:Extender >
+
+                                            <ctrls:Extender.HeaderTemplate>
+                                                <ctrls:StudyInfoControl Study="{Binding}"/>
+                                            </ctrls:Extender.HeaderTemplate>
+
+                                            <ctrls:Extender.DataTemplate>
+                                                <ItemsControl ItemsSource="{Binding Series}"   >
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ctrls:SeriesInfoControl Serie="{Binding}" CanDrag="True" Tag="{Binding SeriesInstanceUID}" DragStarting="SeriesInfoControl_DragStarting" />
+
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </ctrls:Extender.DataTemplate>
+
+                                        </ctrls:Extender>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </ScrollViewer>
+
+        <Grid Grid.Column="1"  Grid.Row="1"  SizeChanged="Grid_SizeChanged" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer x:Name="scrollViewer" Width="300" Grid.Column="0" HorizontalScrollBarVisibility="Auto"  Visibility="{Binding ElementName=ShowDicomDump, Path=IsChecked, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{Binding File, Converter={StaticResource FileToDump}}" FontFamily="Consolas"  Visibility="{Binding ElementName=ShowDicomDump, Path=IsChecked, Converter={StaticResource BoolToVisibility}}"/>
+            </ScrollViewer>
+            <ItemsControl Grid.Column="1" ItemsSource="{Binding Folders}" ItemsPanel="{StaticResource folderTemplate}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate  >
+                        <ctrls:FolderControl ></ctrls:FolderControl>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        <CommandBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" IsSticky="False" >
+            <AppBarButton x:Name="OpenFiles" Icon="OpenFile" Label="Open DICOM Files" HorizontalAlignment="Left" />
+            <AppBarButton x:Name="OpenDirectory" Label="Open DICOM Files from Directory" Icon="OpenWith"  Command="{Binding OpenDirectoryCommand}" />
+            <AppBarToggleButton x:Name="ShowDicomDump" Label="Show DICOM Dump" Icon="ShowResults"  IsChecked="False" />
+        </CommandBar>
+    </Grid>
+</UserControl>
