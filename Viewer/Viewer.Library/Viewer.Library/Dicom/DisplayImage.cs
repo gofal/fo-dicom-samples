@@ -2,7 +2,6 @@
 using Dicom.Imaging;
 using System;
 
-
 namespace Viewer.Library.Dicom
 {
     public class DisplayImage : IDisposable

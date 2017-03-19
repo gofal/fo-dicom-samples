@@ -1,0 +1,51 @@
+﻿<UserControl
+    x:Class="Viewer.Universal.Controls.SlideBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Viewer.Universal.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Width="32" Margin="0,8">
+        <Grid.Resources>
+            <Style TargetType="Thumb">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Thumb">
+                            <Rectangle Width="16"
+                                     Fill="White"
+                                     RenderTransformOrigin="0.5 0.5"
+                                     Stroke="Gray"
+                                     StrokeThickness="1">
+<!--                                <Ellipse.RenderTransform>
+                                    <TranslateTransform Y="-16" />
+                                </Ellipse.RenderTransform>
+    -->                        </Rectangle>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <Rectangle Width="16"
+                   Margin="8,0"
+                   Fill="#FFD5D5D5"
+                   RadiusX="5"
+                   RadiusY="5" />
+        <Canvas x:Name="ContainerCanvas" Margin="8,0" SizeChanged="ContainerCanvas_SizeChanged">
+            
+            <Thumb x:Name="MainThumb" DragCompleted="MainThumb_DragCompleted" DragDelta="MainThumb_DragDelta" />
+            <!--
+            <Rectangle x:Name="ActiveRectangle"
+                       Canvas.Left="8"
+                       Width="16"
+                       Height="16"
+                       Canvas.ZIndex="-1"
+                       Fill="#FF69A0CC"  />
+            -->
+         </Canvas>
+    </Grid>
+</UserControl>
+

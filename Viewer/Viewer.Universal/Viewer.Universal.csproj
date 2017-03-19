@@ -109,6 +109,9 @@
     <Compile Include="Controls\SeriesInfoControl.xaml.cs">
       <DependentUpon>SeriesInfoControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SlideBar.xaml.cs">
+      <DependentUpon>SlideBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StudyInfoControl.xaml.cs">
       <DependentUpon>StudyInfoControl.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SeriesInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SlideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

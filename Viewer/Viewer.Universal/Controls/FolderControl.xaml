@@ -11,6 +11,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
+
     <Grid  PointerWheelChanged="Grid_PointerWheelChanged" DragEnter="Grid_DragEnter"  AllowDrop="True" Drop="Grid_Drop" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -27,7 +28,7 @@
             <canvas:CanvasControl Grid.Row="2" x:Name="CurrentImageCanvas" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" PointerMoved="CurrentImage_PointerMoved" PointerPressed="CurrentImage_PointerPressed" Draw="CurrentImageCanvas_Draw" SizeChanged="CurrentImageCanvas_SizeChanged"  CreateResources="CurrentImageCanvas_CreateResources"  >
             </canvas:CanvasControl>
         </Grid>
-        <Slider x:Name="CurrentImageIndex" Value="{Binding CurrentImageIndex, Mode=TwoWay}" Grid.Column="1" Minimum="0" Maximum="{Binding NumberOfImages}" Orientation="Vertical" >
-        </Slider>
+        <local:SlideBar x:Name="CurrentImageIndex" Value="{Binding CurrentImageIndex, Mode=TwoWay}" Grid.Column="1" Minimum="0" Maximum="{Binding NumberOfImages}"  />
     </Grid>
+
 </UserControl>
