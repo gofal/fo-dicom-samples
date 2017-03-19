@@ -19,7 +19,7 @@ namespace Viewer.Library.ViewModels
 
         private PatientlistModel _patients = new PatientlistModel();
 
-        private ObservableCollection<FolderViewModel> _folers = new ObservableCollection<FolderViewModel>();
+        private ObservableCollection<FolderViewModel> _folders = new ObservableCollection<FolderViewModel>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -32,10 +32,14 @@ namespace Viewer.Library.ViewModels
         public ShellViewModel(IDicomFileReaderService readerService)
         {
             this._readerService = readerService;
-            var folder1 = new FolderViewModel(_patients) { RelativePositionX = 0, RelativePositionY = 0, RelativeWidth = 1, RelativeHeigh = 0.5 };
-            _folers.Add(folder1);
+            var folder1 = new FolderViewModel(_patients) { RelativePositionX = 0, RelativePositionY = 0, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            _folders.Add(folder1);
             var folder2 = new FolderViewModel(_patients) { RelativePositionX = 0, RelativePositionY = 0.5, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
-            _folers.Add(folder2);
+            _folders.Add(folder2);
+            var folder3 = new FolderViewModel(_patients) { RelativePositionX = 0.5, RelativePositionY = 0, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            _folders.Add(folder3);
+            var folder4 = new FolderViewModel(_patients) { RelativePositionX = 0.5, RelativePositionY = 0.5, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            _folders.Add(folder4);
         }
 
         #endregion
@@ -47,7 +51,7 @@ namespace Viewer.Library.ViewModels
         /// </summary>
         public PatientlistModel Patients => _patients;
 
-        public ObservableCollection<FolderViewModel> Folders => _folers;
+        public ObservableCollection<FolderViewModel> Folders => _folders;
 
         public ICommand OpenDirectoryCommand
         {
@@ -104,7 +108,7 @@ namespace Viewer.Library.ViewModels
 
         private void ClearFoldersAndPatientmodel()
         {
-            foreach (var fvm in _folers)
+            foreach (var fvm in _folders)
                 fvm.CurrentSeriesInstanceUID = string.Empty;
             _patients.Clear();
         }
@@ -114,12 +118,7 @@ namespace Viewer.Library.ViewModels
             if (file != null)
             {
                 DicomImage image = new DicomImage(file.Dataset);
-
-                // await d.RunAsync(CoreDispatcherPriority.Normal, () =>
-                // {
                 _patients.InsertDicomFile(image);
-                // RaisePropertyChanged("AsyncPatients");
-                //});
             }
         }
 

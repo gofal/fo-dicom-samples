@@ -8,14 +8,4 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Dicom\DisplayImage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\PatientlistModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\PatientModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\SeriesModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\StudyModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\IDicomFileReaderService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FolderViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ShellViewModel.cs" />
-  </ItemGroup>
 </Project>
