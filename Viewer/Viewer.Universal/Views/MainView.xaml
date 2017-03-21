@@ -83,7 +83,7 @@
             <ItemsControl Grid.Column="1" ItemsSource="{Binding Folders}" ItemsPanel="{StaticResource folderTemplate}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate  >
-                        <ctrls:FolderControl ></ctrls:FolderControl>
+                        <local:FolderView></local:FolderView>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

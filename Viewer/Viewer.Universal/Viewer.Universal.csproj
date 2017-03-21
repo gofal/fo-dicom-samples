@@ -98,8 +98,8 @@
     <Compile Include="Controls\Extender.xaml.cs">
       <DependentUpon>Extender.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FolderControl.xaml.cs">
-      <DependentUpon>FolderControl.xaml</DependentUpon>
+    <Compile Include="Views\FolderView.xaml.cs">
+      <DependentUpon>FolderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FolderPanel.cs" />
     <Compile Include="Controls\PatientInfoControl.xaml.cs">
@@ -152,7 +152,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FolderControl.xaml">
+    <Page Include="Views\FolderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

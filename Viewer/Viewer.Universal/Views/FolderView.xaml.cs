@@ -19,11 +19,11 @@ using Dicom.Imaging;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace Viewer.Universal.Controls
+namespace Viewer.Universal.Views
 {
-    public sealed partial class FolderControl : UserControl
+    public sealed partial class FolderView : UserControl
     {
-        public FolderControl()
+        public FolderView()
         {
             this.InitializeComponent();
             this.DataContextChanged += FolderControl_DataContextChanged;
@@ -48,9 +48,9 @@ namespace Viewer.Universal.Controls
         public void Grid_PointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
             if (e.GetCurrentPoint(this).Properties.MouseWheelDelta > 0)
-                CurrentImageIndex.Value += 1;
-            else
                 CurrentImageIndex.Value -= 1;
+            else
+                CurrentImageIndex.Value += 1;
         }
 
         private void Grid_DragEnter(object sender, DragEventArgs e)
@@ -82,14 +82,13 @@ namespace Viewer.Universal.Controls
             { lastPoint = e.GetCurrentPoint(CurrentImageCanvas); return; }
             var pt = e.GetCurrentPoint(CurrentImageCanvas);
 
-            bool move = (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse && pt.Properties.IsLeftButtonPressed) ||
+            bool move = (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse && pt.Properties.IsMiddleButtonPressed) ||
                    e.Pointer.PointerDeviceType == PointerDeviceType.Touch;
             // move only if the event comes from a touch or when the event comes from a mouse with pressed left button
             if (move)
             {
                 var fvm = (FolderViewModel)(this.DataContext);
-                fvm.CurrentWindowWidth += pt.Position.X - lastPoint.Position.X;
-                fvm.CurrentWindowCenter += pt.Position.Y - lastPoint.Position.Y;
+                fvm.ApplyFunctionMove(pt.Position.X - lastPoint.Position.X, pt.Position.Y - lastPoint.Position.Y);
             }
 
             lastPoint = pt;
@@ -132,7 +131,6 @@ namespace Viewer.Universal.Controls
 
         private void CurrentImageCanvas_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
-            int iHallo = 7;
         }
 
     }

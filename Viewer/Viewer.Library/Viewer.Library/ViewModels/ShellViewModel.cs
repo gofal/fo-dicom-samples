@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Viewer.Library.Functions;
 using Viewer.Library.Models;
 using Viewer.Library.Services;
 
@@ -25,6 +26,8 @@ namespace Viewer.Library.ViewModels
 
         private ICommand _openDirectoryCommand;
 
+        private FunctionBase _defaultFunction = new WindowFunction();
+
         #endregion
 
         #region CONSTRUCTORS
@@ -32,13 +35,13 @@ namespace Viewer.Library.ViewModels
         public ShellViewModel(IDicomFileReaderService readerService)
         {
             this._readerService = readerService;
-            var folder1 = new FolderViewModel(_patients) { RelativePositionX = 0, RelativePositionY = 0, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            var folder1 = new FolderViewModel(this) { RelativePositionX = 0, RelativePositionY = 0, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
             _folders.Add(folder1);
-            var folder2 = new FolderViewModel(_patients) { RelativePositionX = 0, RelativePositionY = 0.5, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            var folder2 = new FolderViewModel(this) { RelativePositionX = 0, RelativePositionY = 0.5, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
             _folders.Add(folder2);
-            var folder3 = new FolderViewModel(_patients) { RelativePositionX = 0.5, RelativePositionY = 0, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            var folder3 = new FolderViewModel(this) { RelativePositionX = 0.5, RelativePositionY = 0, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
             _folders.Add(folder3);
-            var folder4 = new FolderViewModel(_patients) { RelativePositionX = 0.5, RelativePositionY = 0.5, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
+            var folder4 = new FolderViewModel(this) { RelativePositionX = 0.5, RelativePositionY = 0.5, RelativeWidth = 0.5, RelativeHeigh = 0.5 };
             _folders.Add(folder4);
         }
 
@@ -61,6 +64,8 @@ namespace Viewer.Library.ViewModels
                 return _openDirectoryCommand;
             }
         }
+
+        public FunctionBase DefaultFunction => _defaultFunction;
 
         #endregion
 

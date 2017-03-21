@@ -49,6 +49,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Dicom\DisplayImage.cs" />
+    <Compile Include="Functions\FunctionBase.cs" />
+    <Compile Include="Functions\ScrollFunction.cs" />
+    <Compile Include="Functions\WindowFunction.cs" />
     <Compile Include="ModelCommand.cs" />
     <Compile Include="Models\PatientlistModel.cs" />
     <Compile Include="Models\PatientModel.cs" />

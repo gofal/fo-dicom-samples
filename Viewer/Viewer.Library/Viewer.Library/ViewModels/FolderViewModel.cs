@@ -14,7 +14,7 @@ namespace Viewer.Library.ViewModels
 
         #region FIELDS
 
-        PatientlistModel _patients;
+        ShellViewModel _mainModel;
 
         private int _currentImageIndex;
 
@@ -30,9 +30,9 @@ namespace Viewer.Library.ViewModels
 
         #region Constructors
 
-        public FolderViewModel(PatientlistModel patients)
+        public FolderViewModel(ShellViewModel mainModel)
         {
-            _patients = patients;
+            _mainModel = mainModel;
         }
 
         #endregion
@@ -90,7 +90,7 @@ namespace Viewer.Library.ViewModels
             set
             {
                 _currentSeriesUID = value;
-                var newSerie = _patients.FindSerie(_currentSeriesUID);
+                var newSerie = _mainModel.Patients.FindSerie(_currentSeriesUID);
                 SetNewCurrentSerie(newSerie);
                 _currentImageIndex = 0;
                 RaisePropertyChanged(nameof(NumberOfImages));
@@ -166,8 +166,23 @@ namespace Viewer.Library.ViewModels
 
         #endregion
 
-        #region Methods
+        #region public Methods
 
+        public void ApplyFunctionMove(double deltaX, double deltaY)
+        {
+            if (_mainModel.DefaultFunction != null)
+            {
+                bool redraw = _mainModel.DefaultFunction.ApplyMove(this, deltaX, deltaY);
+                if (redraw)
+                {
+                    RaisePropertyChanged(nameof(CurrentImage));
+                }
+            }
+        }
+
+        #endregion
+
+        #region private Methods
 
         private void SetNewCurrentSerie(SeriesModel newSerie)
         {

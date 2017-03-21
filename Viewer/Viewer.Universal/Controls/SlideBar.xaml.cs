@@ -42,6 +42,7 @@ namespace Viewer.Universal.Controls
         {
             var slider = (SlideBar)d;
             slider.SetThumbHeight();
+            OnValuePropertyChanged(d, e);
         }
 
         private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

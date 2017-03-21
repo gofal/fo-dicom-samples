@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400" Background="Black">
 
     <Grid Width="32" Margin="0,8">
         <Grid.Resources>
@@ -16,9 +16,11 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Thumb">
                             <Rectangle Width="16"
-                                     Fill="White"
+                                     Fill="#88FFFFFF"
                                      RenderTransformOrigin="0.5 0.5"
                                      Stroke="Gray"
+                                       RadiusX="5"
+                                       RadiusY="5"
                                      StrokeThickness="1">
 <!--                                <Ellipse.RenderTransform>
                                     <TranslateTransform Y="-16" />
@@ -31,12 +33,12 @@
         </Grid.Resources>
         <Rectangle Width="16"
                    Margin="8,0"
-                   Fill="#FFD5D5D5"
+                   Fill="#44D5D5D5"
                    RadiusX="5"
                    RadiusY="5" />
         <Canvas x:Name="ContainerCanvas" Margin="8,0" SizeChanged="ContainerCanvas_SizeChanged">
             
-            <Thumb x:Name="MainThumb" DragCompleted="MainThumb_DragCompleted" DragDelta="MainThumb_DragDelta" />
+            <Thumb x:Name="MainThumb" DragCompleted="MainThumb_DragCompleted" DragDelta="MainThumb_DragDelta" Canvas.Top="50" Height="50" />
             <!--
             <Rectangle x:Name="ActiveRectangle"
                        Canvas.Left="8"
