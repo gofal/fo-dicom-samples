@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using Dicom;
 using Dicom.Imaging;
+using Viewer.Library.Dicom;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -27,6 +28,15 @@ namespace Viewer.Universal.Views
         {
             this.InitializeComponent();
             this.DataContextChanged += FolderControl_DataContextChanged;
+            this.SizeChanged += FolderView_SizeChanged;
+        }
+
+        private void FolderView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            var fvm = this.DataContext as FolderViewModel;
+            if (fvm == null) return;
+            fvm.AbsoluteHeight = this.ActualHeight;
+            fvm.AbsoluteWidth = this.ActualWidth;
         }
 
         private void FolderControl_DataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -90,6 +100,11 @@ namespace Viewer.Universal.Views
                 var fvm = (FolderViewModel)(this.DataContext);
                 fvm.ApplyFunctionMove(pt.Position.X - lastPoint.Position.X, pt.Position.Y - lastPoint.Position.Y);
             }
+            if (e.Pointer.PointerDeviceType == PointerDeviceType.Mouse && pt.Properties.IsRightButtonPressed)
+            {
+                var fvm = (FolderViewModel)(this.DataContext);
+                fvm.ApplyZoomMove(pt.Position.X - lastPoint.Position.X, pt.Position.Y - lastPoint.Position.Y);
+            }
 
             lastPoint = pt;
         }
@@ -105,9 +120,9 @@ namespace Viewer.Universal.Views
         {
             var fvm = (FolderViewModel)(this.DataContext);
             var tic = DateTime.Now;
-            IImage srcImage = fvm.CurrentImage;
+            DisplayImage srcImage = fvm.CurrentImage;
             if (srcImage == null) return;
-            WriteableBitmap srcBitmap = srcImage.AsWriteableBitmap();
+            WriteableBitmap srcBitmap = srcImage.RenderImage().AsWriteableBitmap();
             if (srcBitmap == null) return;
             try
             {

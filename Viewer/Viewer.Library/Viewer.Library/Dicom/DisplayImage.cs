@@ -1,6 +1,7 @@
 ﻿using Dicom;
 using Dicom.Imaging;
 using System;
+using Viewer.Library.Tools;
 
 namespace Viewer.Library.Dicom
 {
@@ -11,6 +12,7 @@ namespace Viewer.Library.Dicom
         private bool _disposed;
         private IImage _cachedImage;
         private int _frame;
+        private ImageSizer _sizer;
 
 
         static DisplayImage()
@@ -72,6 +74,7 @@ namespace Viewer.Library.Dicom
             _scale = _dicomImage.Scale;
             _showOverlay = _dicomImage.ShowOverlays;
             _overlayColor = _dicomImage.OverlayColor;
+            _sizer = new ImageSizer() { SourceWith = _dicomImage.Width, SourceHeight = _dicomImage.Height, DestinationWidth = _dicomImage.Width, DestinationHeight = _dicomImage.Height }; // todo: cache this ImageSizer
         }
 
         private void SetValues()

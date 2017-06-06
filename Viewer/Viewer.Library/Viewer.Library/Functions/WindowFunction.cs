@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Viewer.Library.ViewModels;
+﻿using Viewer.Library.ViewModels;
 
 namespace Viewer.Library.Functions
 {
@@ -11,6 +6,7 @@ namespace Viewer.Library.Functions
     {
         public override bool ApplyMove(FolderViewModel folder, double deltaX, double deltaY)
         {
+            // TODO: make it relative to folder-size (depending on resolution)?
             folder.CurrentWindowWidth += deltaX;
             folder.CurrentWindowCenter += deltaY;
 

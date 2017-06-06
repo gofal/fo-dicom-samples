@@ -44,6 +44,9 @@ namespace Viewer.Library.ViewModels
         public double RelativeWidth { get; set; }
         public double RelativeHeigh { get; set; }
 
+        public double AbsoluteWidth { get; set; }
+        public double AbsoluteHeight { get; set; }
+
         /// <summary>
         /// the currently selected DicomFile
         /// </summary>
@@ -105,17 +108,17 @@ namespace Viewer.Library.ViewModels
         /// <summary>
         /// the ImageSource of the current image
         /// </summary>
-        public IImage CurrentImage
+        public DisplayImage CurrentImage
         {
             get
             {
                 if (NumberOfImages > 0)
                 {
-                    // the ImageSource is rendered each time, because hiere on this point the user-interactions like
+                    // the ImageSource is rendered each time, because here on this point the user-interactions like
                     // windowing, zooming, panning, rotation etc should be evaluated. 
                     // maybe there will be some sort of caching necessary, but currently performance is fine
                     DisplayImage dcmFile = _currentImages[Math.Max(CurrentImageIndex - 1, 0)];
-                    return dcmFile.RenderImage();
+                    return dcmFile;
                 }
                 else
                     return null;
@@ -168,16 +171,17 @@ namespace Viewer.Library.ViewModels
 
         #region public Methods
 
-        public void ApplyFunctionMove(double deltaX, double deltaY)
+        public void ApplyFunctionMove(double relativeDeltaX, double relativeDeltaY)
         {
-            if (_mainModel.DefaultFunction != null)
-            {
-                bool redraw = _mainModel.DefaultFunction.ApplyMove(this, deltaX, deltaY);
-                if (redraw)
-                {
-                    RaisePropertyChanged(nameof(CurrentImage));
-                }
-            }
+            bool redraw = _mainModel.DefaultFunction?.ApplyMove(this, relativeDeltaX, relativeDeltaY) ?? false;
+            if (redraw) RaisePropertyChanged(nameof(CurrentImage));
+        }
+
+        public void ApplyZoomMove(double relativeDeltaX, double relativeDeltaY)
+        {
+            if (CurrentImage == null) return;
+            CurrentImage.Scale *= Math.Pow(1.1, relativeDeltaY / AbsoluteHeight);
+            RaisePropertyChanged(nameof(CurrentImage));
         }
 
         #endregion
