@@ -16,12 +16,10 @@ namespace Viewer.Universal.Controls
             {
                 try
                 {
-                    if (elem is ContentPresenter)
+                    if (elem is ContentPresenter content)
                     {
-                        var content = elem as ContentPresenter;
-                        if (content.Content is FolderViewModel)
+                        if (content.Content is FolderViewModel folderElem)
                         {
-                            FolderViewModel folderElem = content.Content as FolderViewModel;
                             var newSize = new Size(folderElem.RelativeWidth * availableSize.Width, folderElem.RelativeHeigh * availableSize.Height);
                             elem.Measure(newSize);
                         }
@@ -45,13 +43,11 @@ namespace Viewer.Universal.Controls
             {
                 try
                 {
-                    if (elem is ContentPresenter)
+                    if (elem is ContentPresenter content)
                     {
-                        var content = elem as ContentPresenter;
-                        if (content.Content is FolderViewModel)
+                        if (content.Content is FolderViewModel folderElem)
                         {
                             // if the control is bound to a FolderViewModel, then the properties for the Position are read and used here
-                            FolderViewModel folderElem = content.Content as FolderViewModel;
                             var newRect = new Rect(folderElem.RelativePositionX * finalSize.Width, folderElem.RelativePositionY * finalSize.Height, folderElem.RelativeWidth * finalSize.Width, folderElem.RelativeHeigh * finalSize.Height);
                             elem.Arrange(newRect);
                         }

@@ -39,8 +39,10 @@ namespace Viewer.Universal.Services
         /// <returns></returns>
         public async Task<IList<DicomFile>> GetFilesFromDirectoryAsync(IProgress<DicomFile> progress)
         {
-            var picker = new FolderPicker();
-            picker.ViewMode = PickerViewMode.List;
+            var picker = new FolderPicker
+            {
+                ViewMode = PickerViewMode.List
+            };
             picker.FileTypeFilter.Add("*");
             picker.SuggestedStartLocation = PickerLocationId.Desktop;
             picker.SettingsIdentifier = "FolderPicker";
