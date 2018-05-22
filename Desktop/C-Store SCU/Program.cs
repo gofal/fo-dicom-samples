@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Dicom.Log;
 using Dicom.Network;
 
 namespace Dicom.CStoreSCU
@@ -19,7 +20,7 @@ namespace Dicom.CStoreSCU
 
         static void Main(string[] args)
         {
-            var client = new DicomClient();
+         var client = new DicomClient();
             client.NegotiateAsyncOps();
             var storeMore = "" ;
 
@@ -57,7 +58,7 @@ namespace Dicom.CStoreSCU
                     var request = new DicomCStoreRequest(dicomFile);
 
                     request.OnResponseReceived += (req, response) => {
-                        Console.WriteLine ("C-Store Response Received, Status: " + ((DicomCStoreResponse)response).Status ) ;
+                        Console.WriteLine ("C-Store Response Received, Status: " + response.Status ) ;
                     } ;
 
                     client.AddRequest(request);
@@ -78,7 +79,7 @@ namespace Dicom.CStoreSCU
                 storeMore = Console.ReadLine().Trim() ;
 
             } while ( storeMore.Length > 0 && storeMore.ToLower()[0] == 'y' );
-        }
+   }
 
         private static string GetServerHost()
         {

@@ -20,13 +20,13 @@ namespace Dicom.CStoreSCP
             var dict = DicomDictionary.Default;
 
 
-            // start DICOM server on port from command line argument or 11112
-            int tmp;
-            var port = args != null && args.Length > 0 && int.TryParse(args[0], out tmp) ? tmp : 11112;
-            Console.WriteLine($"Starting C-Store SCP server on port {port}");
+         // start DICOM server on port from command line argument or 11112
+         var port = args != null && args.Length > 0 && int.TryParse(args[0], out int tmp) ? tmp : 11112;
+         Console.WriteLine($"Starting C-Store SCP server on port {port}");
 
-            var server = DicomServer.Create<CStoreSCP>(port);
-
+         LogManager.SetImplementation(ConsoleLogManager.Instance);
+         var options = new DicomServiceOptions { LogDimseDatasets = true };
+            var server = DicomServer.Create<CStoreSCP>(port, logger: ConsoleLogger.Instance, options: options);
 
             // end process
             Console.WriteLine("Press <return> to end...");
@@ -36,62 +36,47 @@ namespace Dicom.CStoreSCP
         private class CStoreSCP : DicomService, IDicomServiceProvider, IDicomCStoreProvider, IDicomCEchoProvider
         {
             private static DicomTransferSyntax[] AcceptedTransferSyntaxes = new DicomTransferSyntax[]
-                                                                                {
-                                                                                    DicomTransferSyntax
-                                                                                        .ExplicitVRLittleEndian,
-                                                                                    DicomTransferSyntax
-                                                                                        .ExplicitVRBigEndian,
-                                                                                    DicomTransferSyntax
-                                                                                        .ImplicitVRLittleEndian
-                                                                                };
+            {
+                DicomTransferSyntax.ExplicitVRLittleEndian,
+                DicomTransferSyntax.ExplicitVRBigEndian,
+                DicomTransferSyntax.ImplicitVRLittleEndian
+            };
 
-            private static DicomTransferSyntax[] AcceptedImageTransferSyntaxes = new DicomTransferSyntax[]
-                                                                                     {
-                                                                                         // Lossless
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEGLSLossless,
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEG2000Lossless,
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEGProcess14SV1,
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEGProcess14,
-                                                                                         DicomTransferSyntax
-                                                                                             .RLELossless,
+         private static DicomTransferSyntax[] AcceptedImageTransferSyntaxes = new DicomTransferSyntax[]
+         {
+                // Lossless
+                DicomTransferSyntax.JPEGLSLossless,
+                DicomTransferSyntax.JPEG2000Lossless,
+                DicomTransferSyntax.JPEGProcess14SV1,
+                DicomTransferSyntax.JPEGProcess14,
+                DicomTransferSyntax.RLELossless,
 
-                                                                                         // Lossy
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEGLSNearLossless,
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEG2000Lossy,
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEGProcess1,
-                                                                                         DicomTransferSyntax
-                                                                                             .JPEGProcess2_4,
+                // Lossy
+               DicomTransferSyntax.JPEGLSNearLossless,
+               DicomTransferSyntax.JPEG2000Lossy,
+                DicomTransferSyntax.JPEGProcess1,
+               DicomTransferSyntax.JPEGProcess2_4,
 
-                                                                                         // Uncompressed
-                                                                                         DicomTransferSyntax
-                                                                                             .ExplicitVRLittleEndian,
-                                                                                         DicomTransferSyntax
-                                                                                             .ExplicitVRBigEndian,
-                                                                                         DicomTransferSyntax
-                                                                                             .ImplicitVRLittleEndian
-                                                                                     };
+                // Uncompressed
+                DicomTransferSyntax.ExplicitVRLittleEndian,
+                DicomTransferSyntax.ExplicitVRBigEndian,
+               DicomTransferSyntax.ImplicitVRLittleEndian
+         };
 
             public CStoreSCP(INetworkStream stream, Encoding fallbackEncoding, Logger log)
                 : base(stream, fallbackEncoding, log)
             {
             }
 
-            public void OnReceiveAssociationRequest(DicomAssociation association)
-            {
-                if (association.CalledAE != "STORESCP")
+         public void OnReceiveAssociationRequest(DicomAssociation association)
+         {
+            if (association.CalledAE != "STORESCP")
                 {
-                    SendAssociationReject(
-                        DicomRejectResult.Permanent,
+               SendAssociationReject(
+                   DicomRejectResult.Permanent,
                         DicomRejectSource.ServiceUser,
                         DicomRejectReason.CalledAENotRecognized);
-                    return;
+               return;
                 }
 
                 foreach (var pc in association.PresentationContexts)
@@ -100,15 +85,15 @@ namespace Dicom.CStoreSCP
                     else if (pc.AbstractSyntax.StorageCategory != DicomStorageCategory.None) pc.AcceptTransferSyntaxes(AcceptedImageTransferSyntaxes);
                 }
 
-                SendAssociationAccept(association);
-            }
+            SendAssociationAccept(association);
+         }
 
-            public void OnReceiveAssociationReleaseRequest()
-            {
-                SendAssociationReleaseResponse();
-            }
+         public void OnReceiveAssociationReleaseRequest()
+         {
+            SendAssociationReleaseResponse();
+         }
 
-            public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
+         public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
             {
             }
 
